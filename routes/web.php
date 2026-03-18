@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PedidosController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,3 +33,16 @@ Route::post('/acceso', [
 Route::post('/cerrar', [
     AuthController::class, 'logout'
 ])->name('cerrar');
+
+Route::middleware(['auth'])->group(function () {
+    // Rutas para el controlador de pedidos
+    Route::resource('pedidos', PedidosController::class);
+});
+
+Route::get('/pedidos/{id}/edit', [
+    PedidosController::class, 'edit'
+])->name('pedidos.edit');
+
+Route::put('/pedidos/{id}', [
+    PedidosController::class, 'update'
+])->name('pedidos.update');
